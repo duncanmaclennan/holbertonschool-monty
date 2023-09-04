@@ -45,6 +45,21 @@ void pall(stack_t **stack, unsigned int line_number)
 	}
 }
 
+void free_stack(stack_t **stack)
+{
+    stack_t *current_node;
+    stack_t *next_node;
+
+    current_node = *stack;
+    while (current_node != NULL)
+    {
+        next_node = current_node->next;
+        free(current_node);
+        current_node = next_node;
+    }
+    *stack = NULL;
+}
+
 int main(int argc, char **argv)
 {
 	FILE *fp;
@@ -97,6 +112,8 @@ int main(int argc, char **argv)
 	fclose(fp);
 	if (line)
 		free(line);
+
+	free_stack(&stack);
 
 	return 0;
 }
