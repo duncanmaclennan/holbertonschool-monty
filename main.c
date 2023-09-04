@@ -6,12 +6,10 @@ void push(stack_t **stack, unsigned int line_number, const char *n_str)
 	stack_t *new_node;
 
 	if (!is_valid_integer(n_str))
-
 	{
 		fprintf(stderr, "L%d: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
-
 	int num = atoi(n_str);
 
 	new_node = malloc(sizeof(stack_t));
@@ -49,7 +47,7 @@ void pall(stack_t **stack, unsigned int line_number)
 int is_valid_integer(const char *str)
 {
 	if (str == NULL)
-		return 0;
+		return (0);
 
 	for (int i = 0; str[i] != '\0'; ++i)
 	{
@@ -57,15 +55,14 @@ int is_valid_integer(const char *str)
 		if (i == 0 && str[i] == '-')
 		{
 			if (str[i + 1] == '\0')
-				return 0;
+				return (0);
 			continue;
 		}
 
 		if (!isdigit(str[i]))
 			return 0;
 	}
-
-	return 1;
+	return (1);
 }
 
 void free_stack(stack_t **stack)
@@ -91,20 +88,17 @@ int main(int argc, char **argv)
 	ssize_t read;
 	unsigned int line_number = 0;
 	stack_t *stack = NULL;
-
 	if (argc != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-
 	fp = fopen(argv[1], "r");
 	if (fp == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-
 	while ((read = getline(&line, &len, fp)) != -1)
 	{
 		char *opcode;
@@ -116,7 +110,6 @@ int main(int argc, char **argv)
 			continue;
 
 		argument = strtok(NULL, " \t\r\n");
-
 		if (strcmp(opcode, "push") == 0)
 		{
 			push(&stack, line_number, argument);
@@ -131,12 +124,10 @@ int main(int argc, char **argv)
 			exit(EXIT_FAILURE);
 		}
 	}
-
 	fclose(fp);
 	if (line)
 		free(line);
 
 	free_stack(&stack);
-
-	return 0;
+	return (0);
 }
