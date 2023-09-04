@@ -1,11 +1,11 @@
 #include <ctype.h>
 #include "monty.h"
 /**
-* push - pushes something
-* @stack: the stack
-* @line_number: the line number
-* @n_str: the string
-*/
+ * push - pushes something
+ * @stack: the stack
+ * @line_number: the line number
+ * @n_str: the string
+ */
 void push(stack_t **stack, unsigned int line_number, const char *n_str)
 {
 	stack_t *new_node;
@@ -36,10 +36,10 @@ void push(stack_t **stack, unsigned int line_number, const char *n_str)
 	*stack = new_node;
 }
 /**
-* pall - pushes something
-* @stack: the stack
-* @line_number: the line number
-*/
+ * pall - pushes something
+ * @stack: the stack
+ * @line_number: the line number
+ */
 void pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *current = *stack;
@@ -53,10 +53,10 @@ void pall(stack_t **stack, unsigned int line_number)
 	}
 }
 /**
-* is_valid_integer - checks if valid
-* @str: the string
-* Return: 1 if success
-*/
+ * is_valid_integer - checks if valid
+ * @str: the string
+ * Return: 1 if success
+ */
 int is_valid_integer(const char *str)
 {
 	if (str == NULL)
@@ -72,14 +72,14 @@ int is_valid_integer(const char *str)
 		}
 
 		if (!isdigit(str[i]))
-			return 0;
+			return (0);
 	}
 	return (1);
 }
 /**
-* free_stack - frees memory
-* @stack: the stack
-*/
+ * free_stack - frees memory
+ * @stack: the stack
+ */
 void free_stack(stack_t **stack)
 {
 	stack_t *current_node;
@@ -95,11 +95,34 @@ void free_stack(stack_t **stack)
 	*stack = NULL;
 }
 /**
-* main - does the monty
-* @argc: the stack
-* @argv: the stack
-* Return: 0 if success
-*/
+ * handle_line - does the monty
+ * @line: the line
+ * @stack: the stack
+ * @line_number: the line number
+ */
+void handle_line(char *line, stack_t **stack, unsigned int line_number)
+{
+	char *opcode, *argument;
+	opcode = strtok(line, " \t\r\n");
+	if (opcode == NULL || opcode[0] == '#')
+		return;
+	argument = strtok(NULL, " \t\r\n");
+	if (strcmp(opcode, "push") == 0)
+		push(stack, line_number, argument);
+	else if (strcmp(opcode, "pall") == 0)
+		pall(stack, line_number);
+	else
+	{
+		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
+		exit(EXIT_FAILURE);
+	}
+}
+/**
+ * main - does the monty
+ * @argc: the stack
+ * @argv: the stack
+ * Return: 0 if success
+ */
 int main(int argc, char **argv)
 {
 	FILE *fp;
@@ -108,46 +131,20 @@ int main(int argc, char **argv)
 	ssize_t read;
 	unsigned int line_number = 0;
 	stack_t *stack = NULL;
-	if (argc != 2)
+
+	if (argc != 2 || !(fp = fopen(argv[1], "r")))
 	{
-		fprintf(stderr, "USAGE: monty file\n");
+		fprintf(stderr, argc != 2 ? "USAGE: monty file\n" : "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	fp = fopen(argv[1], "r");
-	if (fp == NULL)
-	{
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
+
 	while ((read = getline(&line, &len, fp)) != -1)
 	{
-		char *opcode;
-		char *argument;
-
-		line_number++;
-		opcode = strtok(line, " \t\r\n");
-		if (opcode == NULL || opcode[0] == '#')
-			continue;
-
-		argument = strtok(NULL, " \t\r\n");
-		if (strcmp(opcode, "push") == 0)
-		{
-			push(&stack, line_number, argument);
-		}
-		else if (strcmp(opcode, "pall") == 0)
-		{
-			pall(&stack, line_number);
-		}
-		else
-		{
-			fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
-			exit(EXIT_FAILURE);
-		}
+		handle_line(line, &stack, ++line_number);
 	}
-	fclose(fp);
-	if (line)
-		free(line);
 
+	fclose(fp);
+	free(line);
 	free_stack(&stack);
 	return (0);
 }

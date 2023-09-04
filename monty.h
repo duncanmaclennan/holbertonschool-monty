@@ -19,3 +19,4 @@ void push(stack_t **stack, unsigned int line_number, const char *n_str);
 void pall(stack_t **stack, unsigned int line_number);
 int is_valid_integer(const char *str);
 void free_stack(stack_t **stack);
+void handle_line(char *line, stack_t **stack, unsigned int line_number);
