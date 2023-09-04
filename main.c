@@ -5,7 +5,7 @@ void push(stack_t **stack, unsigned int line_number, const char *n_str)
     stack_t *new_node;
 
 
-    if (n_str == NULL || atoi(n_str) == 0 && strcmp(n_str, "0") != 0)
+    if (n_str == NULL || (atoi(n_str) == 0 && strcmp(n_str, "0") != 0))
     {
         fprintf(stderr, "L%d: usage: push integer\n", line_number);
         exit(EXIT_FAILURE);
