@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include "monty.h"
 
 void push(stack_t **stack, unsigned int line_number, const char *n_str)
