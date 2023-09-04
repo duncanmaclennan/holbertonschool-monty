@@ -1,6 +1,11 @@
 #include <ctype.h>
 #include "monty.h"
-
+/**
+* push - pushes something
+* @stack: the stack
+* @line_number: the line number
+* @n_str: the string
+*/
 void push(stack_t **stack, unsigned int line_number, const char *n_str)
 {
 	stack_t *new_node;
@@ -30,7 +35,11 @@ void push(stack_t **stack, unsigned int line_number, const char *n_str)
 
 	*stack = new_node;
 }
-
+/**
+* pall - pushes something
+* @stack: the stack
+* @line_number: the line number
+*/
 void pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *current = *stack;
@@ -43,7 +52,11 @@ void pall(stack_t **stack, unsigned int line_number)
 		current = current->next;
 	}
 }
-
+/**
+* is_valid_integer - checks if valid
+* @str: the string
+* Return: 1 if success
+*/
 int is_valid_integer(const char *str)
 {
 	if (str == NULL)
@@ -51,7 +64,6 @@ int is_valid_integer(const char *str)
 
 	for (int i = 0; str[i] != '\0'; ++i)
 	{
-		// Handle negative numbers
 		if (i == 0 && str[i] == '-')
 		{
 			if (str[i + 1] == '\0')
@@ -64,7 +76,10 @@ int is_valid_integer(const char *str)
 	}
 	return (1);
 }
-
+/**
+* free_stack - frees memory
+* @stack: the stack
+*/
 void free_stack(stack_t **stack)
 {
 	stack_t *current_node;
@@ -79,7 +94,12 @@ void free_stack(stack_t **stack)
 	}
 	*stack = NULL;
 }
-
+/**
+* main - does the monty
+* @argc: the stack
+* @argv: the stack
+* Return: 0 if success
+*/
 int main(int argc, char **argv)
 {
 	FILE *fp;
