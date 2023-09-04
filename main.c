@@ -4,7 +4,7 @@ void push(stack_t **stack, unsigned int line_number, const char *n_str)
 {
 	stack_t *new_node;
 
-	if (n_str == NULL || (atoi(n_str) == 0 && strcmp(n_str, "0") != 0))
+	if (!is_valid_integer(n_str))
 
 	{
 		fprintf(stderr, "L%d: usage: push integer\n", line_number);
@@ -45,19 +45,41 @@ void pall(stack_t **stack, unsigned int line_number)
 	}
 }
 
+int is_valid_integer(const char *str)
+{
+	if (str == NULL)
+		return 0;
+
+	for (int i = 0; str[i] != '\0'; ++i)
+	{
+		// Handle negative numbers
+		if (i == 0 && str[i] == '-')
+		{
+			if (str[i + 1] == '\0')
+				return 0;
+			continue;
+		}
+
+		if (!isdigit(str[i]))
+			return 0;
+	}
+
+	return 1;
+}
+
 void free_stack(stack_t **stack)
 {
-    stack_t *current_node;
-    stack_t *next_node;
+	stack_t *current_node;
+	stack_t *next_node;
 
-    current_node = *stack;
-    while (current_node != NULL)
-    {
-        next_node = current_node->next;
-        free(current_node);
-        current_node = next_node;
-    }
-    *stack = NULL;
+	current_node = *stack;
+	while (current_node != NULL)
+	{
+		next_node = current_node->next;
+		free(current_node);
+		current_node = next_node;
+	}
+	*stack = NULL;
 }
 
 int main(int argc, char **argv)
