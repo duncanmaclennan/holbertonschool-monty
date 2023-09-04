@@ -121,12 +121,12 @@ int main(int argc, char **argv)
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	if (!(fp = fopen(argv[1], "r")))
+	fp = fopen(argv[1], "r");
+	if (fp == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-
 	while ((read = getline(&line, &len, fp)) != -1)
 	{
 		handle_line(line, &stack, ++line_number);
