@@ -94,6 +94,31 @@ int is_valid_integer(const char *str)
 }
 
 /**
+ * pop - does the pop
+ * @stack: the stack
+ * @line_number: the line number
+ */
+void pop(stack_t **stack, unsigned int line_number)
+{
+	stack_t *temp;
+
+	if (*stack == NULL)
+	{
+		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	temp = *stack;
+
+	*stack = (*stack)->next;
+
+	if (*stack != NULL)
+	{
+		(*stack)->prev = NULL;
+	}
+	free(temp);
+}
+
+/**
  * handle_line - does the monty
  * @line: the line
  * @stack: the stack
@@ -113,6 +138,8 @@ void handle_line(char *line, stack_t **stack, unsigned int line_number)
 		pall(stack, line_number);
 	else if (strcmp(opcode, "pint") == 0)
 		pint(stack, line_number);
+	else if (strcmp(opcode, "pop") == 0)
+		pop(stack, line_number);
 	else
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
