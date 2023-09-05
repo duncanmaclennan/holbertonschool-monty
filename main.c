@@ -52,6 +52,22 @@ void pall(stack_t **stack, unsigned int line_number)
 		current = current->next;
 	}
 }
+
+/**
+ * pint - pints something
+ * @stack: the stack
+ * @line_number: the line number
+ */
+void pint(stack_t **stack, unsigned int line_number)
+{
+	if (*stack == NULL)
+	{
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	printf("%d\n", (*stack)->n);
+}
+
 /**
  * is_valid_integer - checks if valid
  * @str: the string
@@ -95,6 +111,8 @@ void handle_line(char *line, stack_t **stack, unsigned int line_number)
 		push(stack, line_number, argument);
 	else if (strcmp(opcode, "pall") == 0)
 		pall(stack, line_number);
+	else if (strcmp(opcode, "pint") == 0)
+		pint(&stack, line_number);
 	else
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
