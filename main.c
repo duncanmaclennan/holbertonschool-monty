@@ -119,6 +119,28 @@ void pop(stack_t **stack, unsigned int line_number)
 }
 
 /**
+ * swap - does the swap
+ * @stack: the stack
+ * @line_number: the line number
+ */
+void swap(stack_t **stack, unsigned int line_number)
+{
+	int temp;
+
+	// Check if the stack has less than two elements
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+
+	// Swap the top two elements
+	temp = (*stack)->n;
+	(*stack)->n = (*stack)->next->n;
+	(*stack)->next->n = temp;
+}
+
+/**
  * handle_line - does the monty
  * @line: the line
  * @stack: the stack
@@ -140,12 +162,15 @@ void handle_line(char *line, stack_t **stack, unsigned int line_number)
 		pint(stack, line_number);
 	else if (strcmp(opcode, "pop") == 0)
 		pop(stack, line_number);
+	else if (strcmp(opcode, "swap") == 0)
+		swap(stack, line_number);
 	else
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
 		exit(EXIT_FAILURE);
 	}
 }
+
 /**
  * main - does the monty
  * @argc: the stack
