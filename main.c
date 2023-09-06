@@ -141,6 +141,33 @@ void swap(stack_t **stack, unsigned int line_number)
 }
 
 /**
+ * add - does the add
+ * @stack: the stack
+ * @line_number: the line number
+ */
+void add(stack_t **stack, unsigned int line_number)
+{
+	stack_t *temp;
+
+	// Check if the stack has less than two elements
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+
+	// Add the top two elements of the stack
+	(*stack)->next->n += (*stack)->n;
+
+	// Store the result in the second top element and remove the top element
+	temp = *stack;
+	*stack = (*stack)->next;
+	(*stack)->prev = NULL;
+
+	free(temp);
+}
+
+/**
  * handle_line - does the monty
  * @line: the line
  * @stack: the stack
@@ -164,6 +191,8 @@ void handle_line(char *line, stack_t **stack, unsigned int line_number)
 		pop(stack, line_number);
 	else if (strcmp(opcode, "swap") == 0)
 		swap(stack, line_number);
+	else if (strcmp(opcode, "add") == 0)
+		add(stack, line_number);
 	else
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
