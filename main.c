@@ -168,6 +168,16 @@ void add(stack_t **stack, unsigned int line_number)
 }
 
 /**
+ * nop - does the nop
+ * @stack: the stack
+ * @line_number: the line number
+ */
+void nop(stack_t **stack, unsigned int line_number)
+{
+    (void)stack;
+    (void)line_number;
+}
+/**
  * handle_line - does the monty
  * @line: the line
  * @stack: the stack
@@ -193,6 +203,8 @@ void handle_line(char *line, stack_t **stack, unsigned int line_number)
 		swap(stack, line_number);
 	else if (strcmp(opcode, "add") == 0)
 		add(stack, line_number);
+	else if (strcmp(opcode, "nop") == 0)
+    	nop(stack, line_number);
 	else
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
